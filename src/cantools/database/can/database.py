@@ -309,7 +309,10 @@ class Database:
         database = dbc.load_string(string, self._strict, sort_signals=self._sort_signals)
 
         self._messages += database.messages
-        self._nodes = database.nodes
+        node_names = set(n.name for n in self._nodes)
+        for n in database.nodes:
+            if n.name not in node_names:
+                self._nodes.append(n)
         self._buses = database.buses
         self._version = database.version
         self._dbc = database.dbc
